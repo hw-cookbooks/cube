@@ -1,0 +1,12 @@
+description "Cube Collector"
+
+start on runlevel [2345]
+stop on runlevel [!2345]
+
+respawn
+
+env PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+chdir /node_modules/cube
+
+exec sudo -u node node bin/collector.js
