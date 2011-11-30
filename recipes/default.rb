@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "ufw"
+include_recipe "ufw::databag"
 
 user "node"
 
