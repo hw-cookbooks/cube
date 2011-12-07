@@ -19,14 +19,15 @@
 
 include_recipe "ufw::databag"
 
+include_recipe "mongodb::10gen_repo"
+include_recipe "mongodb"
+
 user "node"
 
 node.set[:nodejs][:version] = "0.4.8"
 node.set[:nodejs][:npm] = "1.0.106"
 
 include_recipe "nodejs::npm"
-
-package "mongodb"
 
 execute "install cube" do
   command "npm install cube"
