@@ -24,9 +24,6 @@ include_recipe "mongodb"
 
 user "node"
 
-node.set[:nodejs][:version] = "0.4.8"
-node.set[:nodejs][:npm] = "1.0.106"
-
 include_recipe "nodejs::npm"
 
 execute "install cube" do
