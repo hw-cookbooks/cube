@@ -31,21 +31,6 @@ execute "install cube" do
   creates "/node_modules/cube"
 end
 
-execute "initialize cube database" do
-  command "mongo cube_development /node_modules/cube/schema/schema-create.js"
-  creates "/var/lib/mongodb/cube_development.ns"
-end
-
-template "/usr/src/schema-update.js" do
-  source "schema-update.js.erb"
-  notifies :run, "execute[update cube database schema]"
-end
-
-execute "update cube database schema" do
-  command "mongo cube_development /usr/src/schema-update.js"
-  action :nothing
-end
-
 template "/etc/init/collector.conf" do
   mode "644"
   notifies :restart, "service[collector]"
