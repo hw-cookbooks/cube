@@ -29,6 +29,11 @@ execute "install cube" do
   creates "/node_modules/cube"
 end
 
+directory node[:cube][:log_dir] do
+  recursive true
+  action :create
+end
+
 template "/etc/init/collector.conf" do
   mode "644"
   notifies :restart, "service[collector]"
