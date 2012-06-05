@@ -11,4 +11,3 @@ end
 
 depends "mongodb"
 depends "nodejs"
-depends "ufw"
