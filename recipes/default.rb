@@ -22,29 +22,11 @@ include_recipe "mongodb"
 
 user "node"
 
-node.set[:nodejs][:version] = "0.4.8"
-node.set[:nodejs][:npm] = "1.0.106"
-
 include_recipe "nodejs::npm"
 
 execute "install cube" do
   command "npm install cube"
   creates "/node_modules/cube"
-end
-
-execute "initialize cube database" do
-  command "mongo cube_development /node_modules/cube/schema/schema-create.js"
-  creates "/var/lib/mongodb/cube_development.ns"
-end
-
-template "/usr/src/schema-update.js" do
-  source "schema-update.js.erb"
-  notifies :run, "execute[update cube database schema]"
-end
-
-execute "update cube database schema" do
-  command "mongo cube_development /usr/src/schema-update.js"
-  action :nothing
 end
 
 template "/etc/init/collector.conf" do
