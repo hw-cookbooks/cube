@@ -34,23 +34,23 @@ directory node[:cube][:log_dir] do
   action :create
 end
 
-template "/etc/init/collector.conf" do
+template "/etc/init/cube-collector.conf" do
   mode "644"
-  notifies :restart, "service[collector]"
+  notifies :restart, "service[cube-collector]"
 end
 
-template "/etc/init/evaluator.conf" do
+template "/etc/init/cube-evaluator.conf" do
   mode "644"
-  notifies :restart, "service[evaluator]"
+  notifies :restart, "service[cube-evaluator]"
 end
 
-service "collector" do
+service "cube-collector" do
   provider Chef::Provider::Service::Upstart
   supports :status => true, :restart => true
   action [ :enable, :start ]
 end
 
-service "evaluator" do
+service "cube-evaluator" do
   provider Chef::Provider::Service::Upstart
   supports :status => true, :restart => true
   action [ :enable, :start ]
