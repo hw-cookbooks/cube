@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-include_recipe "mongodb::10gen_repo"
-include_recipe "mongodb::standalone"
+include_recipe "riot-mongodb::10gen_repo"
+include_recipe "riot-mongodb::standalone"
 
 user "node"
 
