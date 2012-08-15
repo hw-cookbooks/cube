@@ -9,4 +9,4 @@ env PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 chdir /node_modules/cube
 
-exec sudo -u node /usr/local/bin/node bin/collector.js > <%= node[:cube][:log_dir] %>/collector.log 2>&1
+exec sudo -u node /usr/bin/nodejs bin/collector.js > <%= node[:cube][:log_dir] %>/collector.log 2>&1

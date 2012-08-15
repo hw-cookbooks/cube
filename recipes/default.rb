@@ -18,11 +18,11 @@
 #
 
 include_recipe "mongodb::10gen_repo"
-include_recipe "mongodb"
+include_recipe "mongodb::standalone"
 
 user "node"
 
-include_recipe "nodejs::npm"
+include_recipe "nodejs::install_from_package"
 
 execute "install cube" do
   command "npm install cube"
