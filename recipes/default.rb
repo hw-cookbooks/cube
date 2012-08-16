@@ -24,14 +24,23 @@ user "node"
 
 include_recipe "nodejs::install_from_package"
 
-execute "install cube" do
-  command "npm install cube"
-  creates "/node_modules/cube"
+directory node[:cube][:install_dir] do
+  recursive true
+end
+
+directory node[:cube][:static_dir] do
+  recursive true
 end
 
 directory node[:cube][:log_dir] do
   recursive true
   action :create
+end
+
+execute "install cube" do
+  cwd     node[:cube][:install_dir]
+  command "npm install cube"
+  creates "#{node[:cube][:install_dir]}/node_modules/cube"
 end
 
 template "/etc/init/cube-collector.conf" do
