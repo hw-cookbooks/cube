@@ -64,3 +64,11 @@ service "cube-evaluator" do
   supports :status => true, :restart => true
   action [ :enable, :start ]
 end
+
+logrotate_app "cube" do
+  cookbook  "logrotate"
+  path      node.cube.log_dir
+  frequency node.cube.log_rotate_frequency
+  rotate    node.cube.past_logs
+  create    "644 node root"
+end
