@@ -1,12 +1,15 @@
-maintainer       "Heavy Water Software Inc."
-maintainer_email "ops@heavywater.ca"
+name             "riot-cube"
+maintainer       "Riot Games"
+maintainer_email "tcashion@riotgames.com"
 license          "Apache 2.0"
 description      "Installs/Configures cube"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "0.4.0"
+version          "0.4.1"
 
-supports "ubuntu"
+%w( centos redhat fedora ubuntu ).each do |os|
+  supports os
+end
 
-depends "mongodb"
-depends "nodejs"
-depends "ufw"
+depends "riot-mongodb"
+depends "nodejs", "= 1.0.1"
+depends "logrotate", "= 0.8.2"

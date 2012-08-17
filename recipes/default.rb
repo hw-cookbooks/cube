@@ -17,56 +17,58 @@
 # limitations under the License.
 #
 
-include_recipe "ufw::databag"
-
-include_recipe "mongodb::10gen_repo"
-include_recipe "mongodb"
+include_recipe "riot-mongodb::10gen_repo"
+include_recipe "riot-mongodb::standalone"
 
 user "node"
 
-node.set[:nodejs][:version] = "0.4.8"
-node.set[:nodejs][:npm] = "1.0.106"
+include_recipe "nodejs::install_from_package"
 
-include_recipe "nodejs::npm"
+directory node[:cube][:install_dir] do
+  recursive true
+end
+
+directory node[:cube][:static_dir] do
+  recursive true
+end
+
+directory node[:cube][:log_dir] do
+  recursive true
+  action :create
+end
 
 execute "install cube" do
+  cwd     node[:cube][:install_dir]
   command "npm install cube"
-  creates "/node_modules/cube"
+  creates "#{node[:cube][:install_dir]}/node_modules/cube"
 end
 
-execute "initialize cube database" do
-  command "mongo cube_development /node_modules/cube/schema/schema-create.js"
-  creates "/var/lib/mongodb/cube_development.ns"
-end
-
-template "/usr/src/schema-update.js" do
-  source "schema-update.js.erb"
-  notifies :run, "execute[update cube database schema]"
-end
-
-execute "update cube database schema" do
-  command "mongo cube_development /usr/src/schema-update.js"
-  action :nothing
-end
-
-template "/etc/init/collector.conf" do
+template "/etc/init/cube-collector.conf" do
   mode "644"
-  notifies :restart, "service[collector]"
+  notifies :restart, "service[cube-collector]"
 end
 
-template "/etc/init/evaluator.conf" do
+template "/etc/init/cube-evaluator.conf" do
   mode "644"
-  notifies :restart, "service[evaluator]"
+  notifies :restart, "service[cube-evaluator]"
 end
 
-service "collector" do
+service "cube-collector" do
   provider Chef::Provider::Service::Upstart
   supports :status => true, :restart => true
   action [ :enable, :start ]
 end
 
-service "evaluator" do
+service "cube-evaluator" do
   provider Chef::Provider::Service::Upstart
   supports :status => true, :restart => true
   action [ :enable, :start ]
+end
+
+logrotate_app "cube" do
+  cookbook  "logrotate"
+  path      node.cube.log_dir
+  frequency node.cube.log_rotate_frequency
+  rotate    node.cube.past_logs
+  create    "644 node root"
 end

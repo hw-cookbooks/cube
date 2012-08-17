@@ -7,6 +7,6 @@ respawn
 
 env PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-chdir /node_modules/cube
+chdir <%= node.cube.install_dir %>
 
-exec sudo -u node node bin/evaluator.js
+exec sudo -u node /usr/bin/nodejs node_modules/cube/bin/evaluator.js > <%= node[:cube][:log_dir] %>/evaluator.log 2>&1
