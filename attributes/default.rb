@@ -1,1 +1,1 @@
-default[:cube][:metric][:types] = Array.new
+default[:cube][:metric][:types] = []
